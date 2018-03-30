@@ -188,8 +188,40 @@ map2 <- map2+ annotate("text", x = -4.555, y = 50.837, label = "The Barrel at Bu
 map2 <- map2+ annotate("text", x = -4.543, y = 50.828, label = "Bude Cornwall Cricket Club")
 map2
 ```
+##Edited by guanxuyi
+# Hotel on map
+```{r message=FALSE, warning=FALSE, echo = FALSE}
+hotel <- geocode("The Grosvenor")
+map <- get_map(hotel)
+bb <- attr(map, "bb")
+bbox <- bb2bbox(bb)
 
+map <- get_map(pub, zoom=16)
 
+ggmap(map) +
+  geom_point(
+    aes(x = lon, y = lat),
+    data = hotel, color = "green", size = 3
+  )
+```
+Mark routes from the hotel to the cricket ground.
+
+```{r message=FALSE, warning=FALSE, echo = FALSE}
+from <- "The Grosvenor"
+to <- "Bude Cornwall Cricket Club"
+route_df <- route(from, to, structure = "route")
+
+map10 <- get_map("Bude", zoom = 14)
+map2 <- ggmap(map10) +  
+  geom_path(
+    aes(x = lon, y = lat), colour = "red", size = 1.5,
+    data = route_df, lineend = "round"
+  )
+
+map2 <- map2+ annotate("text", x = -0.1452793, y = 51.49567, label = "The Grosvenor")
+map2 <- map2+ annotate("text", x = -4.543, y = 50.828, label = "Bude Cornwall Cricket Club")
+map2
+```
 
 
 # Citations
